@@ -1,10 +1,10 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
 
-interface initialBalance {
+export interface InitialBalance {
   value: number
 }
 
-const initialState: initialBalance = { value: 1000 } // placeholder dev value that should come from database eventually
+const initialState: InitialBalance = { value: 1000 } // placeholder dev value that should come from database eventually
 
 export const initialBalanceSlice = createSlice({
   name: 'initialBalance',
