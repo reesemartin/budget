@@ -1,6 +1,6 @@
 # Budget
 
-WIP
+WIP barebones styling so don't judge lol
 
 ## Install
 ```

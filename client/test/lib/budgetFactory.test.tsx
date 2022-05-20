@@ -3,6 +3,7 @@ import {
   budgetLineFactory,
   mockBudgetLineFactory,
   convertBudgetLineDateToString,
+  parseBudgetLineDate,
   sortBudgetLines,
 } from './../../src/lib/budgetFactory'
 import { BudgetLine } from '../../src/model/budgetLines'
@@ -25,6 +26,16 @@ describe('convertBudgetLineDateToString', () => {
     expect(convertBudgetLineDateToString(newBudgetLine)).toEqual({
       ...newBudgetLine,
       date: '2022-05-20T01:44:15.827Z',
+    })
+  })
+})
+
+describe('parseBudgetLineDate', () => {
+  it('converts the date property of a budget line object if that date is a Date object instance', () => {
+    const rawBudgetLine = convertBudgetLineDateToString(mockBudgetLineFactory({ date: new Date('2022-05-20T01:44:15.827Z') }))
+    expect(parseBudgetLineDate(rawBudgetLine)).toEqual({
+      ...rawBudgetLine,
+      date: new Date('2022-05-20T01:44:15.827Z'),
     })
   })
 })
