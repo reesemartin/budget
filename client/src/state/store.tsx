@@ -4,10 +4,12 @@ import {
   AnyAction,
 } from '@reduxjs/toolkit'
 import budgetLinesSlice from './budgetLinesSlice'
+import initialBalanceSlice from './initialBalanceSlice'
 
 export const store = configureStore({
   reducer: {
     budgetLines: budgetLinesSlice,
+    initialBalance: initialBalanceSlice,
   },
 })
 

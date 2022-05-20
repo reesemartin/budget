@@ -1,5 +1,4 @@
 import { createSlice, PayloadAction } from '@reduxjs/toolkit'
-import type { RootState } from './store'
 import { BudgetLineStorage } from '../model/budgetLines'
 import { mockBudgetLineFactory, convertBudgetLineDateToString } from '../lib/budgetFactory'
 

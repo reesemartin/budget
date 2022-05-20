@@ -1,13 +1,20 @@
 import { useEffect, useState } from 'react'
+import { useAppSelector, useAppDispatch } from '../state/hooks'
 import { BudgetLine } from '../model/budgetLines'
 import { sortBudgetLines } from './../lib/budgetFactory'
 import EditableBudgetLine from './EditableBudgetLine'
+import { updateInitialBalance } from './../state/initialBalanceSlice'
 
-interface InitialBalanceElementProps {
-  initialBalance: number
-  setInitialBalance: React.Dispatch<React.SetStateAction<number>>
-}
-const InitialBalanceElement: React.FC<InitialBalanceElementProps> = ({ initialBalance, setInitialBalance }) => {
+const InitialBalanceElement: React.FC = () => {
+  const initialBalance = useAppSelector((state) => state.initialBalance.value)
+  const [tempInputAmount, setTempInputAmount] = useState<string>(String(initialBalance))
+
+  const dispatch = useAppDispatch()
+
+  const doUpdateBudgetLine = (amount: number) => {
+    dispatch(updateInitialBalance(amount))
+  }
+
   return (
     <div className={`flex border-b border-gray-700`}>
       <div className={`p-2 w-1/6 border-l border-t border-gray-700`}></div>
@@ -19,9 +26,13 @@ const InitialBalanceElement: React.FC<InitialBalanceElementProps> = ({ initialBa
           className="p-2 w-full h-full"
           type="number"
           step="0.01"
-          value={initialBalance}
+          value={tempInputAmount}
           onChange={(event) => {
-            setInitialBalance(Number(event.target.value))
+            setTempInputAmount(event.target.value)
+            let amount = Number(event.target.value)
+            if (!isNaN(amount)) {
+              doUpdateBudgetLine(amount)
+            }
           }}
         />
       </div>
@@ -33,7 +44,7 @@ interface BudgetLinesElementProps {
   budgetLines: BudgetLine[]
 }
 const BudgetLinesElement: React.FC<BudgetLinesElementProps> = ({ budgetLines }) => {
-  const [initialBalance, setInitialBalance] = useState<number>(0)
+  const initialBalance = useAppSelector((state) => state.initialBalance.value)
   const [displayBudgetLines, setDisplayBudgetLines] = useState<BudgetLine[]>(budgetLines)
 
   let newBalance = initialBalance
@@ -44,7 +55,7 @@ const BudgetLinesElement: React.FC<BudgetLinesElementProps> = ({ budgetLines }) 
 
   return (
     <div className="w-full max-w-3xl">
-      <InitialBalanceElement initialBalance={initialBalance} setInitialBalance={setInitialBalance} />
+      <InitialBalanceElement />
       {displayBudgetLines &&
         displayBudgetLines.map((budgetLine, index) => {
           newBalance += budgetLine.amount
